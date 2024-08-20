@@ -1,0 +1,85 @@
+﻿@model IEnumerable<DoAnWebBanGiay.Models.Entities.DonHang>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Lịch sử mua hàng</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ten)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayMua)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrangThaiDonHang)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TongTien)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiaChi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhiVanChuyen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.phuongThucThanhToan)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Ten)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayMua)
+            </td>
+                @if (item.TrangThaiDonHang == null)
+                {
+                    <td>
+                        Đơn hàng chưa được xác nhận
+                    </td>
+                }
+                else if (item.TrangThaiDonHang == false)
+                {
+                    <td>
+                        Đơn hàng đã bị huỷ
+                    </td>
+                }
+                else if (item.TrangThaiDonHang == true && item.TrangThaiThanhToan == true)
+                {
+                    <td>
+                        Đơn hàng đã gửi thành công
+                    </td>
+                }
+                else if (item.TrangThaiDonHang == true && item.TrangThaiThanhToan == false)
+                {
+                    <td>
+                        Đơn hàng đã xác nhận, chưa được thanh toán
+                    </td>
+                }
+            <td>
+                @Html.DisplayFor(modelItem => item.TongTien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiaChi)
+            </td>
+ 
+            <td>
+                @Html.DisplayFor(modelItem => item.PhiVanChuyen)
+            </td>
+ 
+            <td>
+                @Html.DisplayFor(modelItem => item.phuongThucThanhToan.Ten)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

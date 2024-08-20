@@ -1,0 +1,164 @@
+﻿
+@model DoAnWebBanGiay.Models.Entities.DonHang
+@using DoAnWebBanGiay.Models.Entities;
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    List<ChiTietDonHang> ct = ViewBag.ChiTiet;
+    List<AnhSP> anhSPs = ViewBag.AnhSP;
+    double? tongtien = 0.0;
+}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    html, body, h1, h2, h3, h4, h5, h6 {
+        font-family: "Roboto", sans-serif
+    }
+</style>
+<div>
+    @if(Model.TrangThaiDonHang == null)
+    {
+        <a asp-action="HuyDH" asp-route-id="@Model.Id" class="btn btn-danger">Hủy</a>
+        <a asp-action="XacNhanDH" asp-route-id="@Model.Id" class="btn btn-success">Xác nhận</a>
+    }
+    @if (Model.TrangThaiDonHang == false)
+    {
+        <div class="alert alert-danger"><p>Đơn hàng đã bị hủy</p></div>
+    }
+    @if (Model.TrangThaiDonHang == true)
+    {
+        <a asp-action="XacNhanTT" asp-route-id="@Model.Id" class="btn btn-success">Xác nhận thanh toán</a>
+    }
+    @if (Model.TrangThaiThanhToan == true)
+    {
+        <div class="alert alert-success"><p>Đơn hàng đã được thanh toán</p></div>
+    }
+</div>
+<!-- Page Container -->
+<div class="w3-content w3-margin-top" style="max-width:1400px;">
+
+    <!-- The Grid -->
+    <div class="w3-row-padding">
+
+        <!-- Left Column -->
+        <div class="w3-third">
+
+            <div class="w3-white w3-text-grey w3-card-4">
+
+                <div class="w3-container">
+                    <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i> @Html.DisplayFor(model => model.Ten)</p>
+                    <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i> @Html.DisplayFor(model => model.nguoiDung.HoTen)</p>
+                    <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i> @Html.DisplayFor(model => model.DiaChi)</p>
+                    <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>@Html.DisplayFor(model => model.nguoiDung.Email)</p>
+                    <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>@Html.DisplayFor(model => model.nguoiDung.SDT)</p>
+                    <dl class="row">
+                    <dt class="col-sm-2">
+                            <i class="fa fa-calendar fa-fw w3-margin-right"></i>
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.NgayMua)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.TrangThaiDonHang)
+                    </dt>
+                    @if (Model.TrangThaiDonHang == null)
+                    {
+                        <dd class="col-sm-10">
+                            Đơn hàng chưa được xác nhận
+                        </dd>
+                    }
+                    else if (Model.TrangThaiDonHang == false)
+                    {
+                        <dd class="col-sm-10">
+                            Đơn hàng đã bị huỷ
+                        </dd>
+                    }
+                    else if (Model.TrangThaiDonHang == true)
+                    {
+                        <dd class="col-sm-10">
+                            Đơn hàng đã được xác nhận
+                        </dd>
+                    }
+                    else if (Model.TrangThaiDonHang == true && Model.TrangThaiThanhToan == true)
+                    {
+                        <dd class="col-sm-10">
+                            Đơn hàng đã gửi thành công
+                        </dd>
+                    }
+                    else
+                    {
+                        <dd class="col-sm-10">
+                            Đơn hàng chưa được thanh toán
+                        </dd>
+                    }
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.TongTien)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.TongTien)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.MoTa)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.MoTa)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.PhiVanChuyen)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.PhiVanChuyen)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.phuongThucThanhToan)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.phuongThucThanhToan.Ten)
+                        </dd>
+                    </dl>
+                    <hr>
+
+                </div>
+            </div><br>
+
+            <!-- End Left Column -->
+        </div>
+
+        <!-- Right Column -->
+        <div class="w3-twothird">
+            @foreach (var item in ct)
+            {
+                <div class="w3-container w3-card w3-white w3-margin-bottom" style="display: flex">
+                    <div class="col-md-2 col-lg-2 col-xl-2">
+                        <img src="~/Adminassets/Img/sanpham/@anhSPs.FirstOrDefault(x => x.IdSanPham == item.IdSanPham)?.Anh"
+                             class="img-fluid rounded-3" alt="Cotton T-shirt">
+                    </div>
+                    <div style="width:100%">
+                        <h5 class="w3-opacity mb-1 text-center"><b>@item.sanPham?.Ten</b></h5>
+                        <div class="w3-container " style="display:flex; justify-content:space-between; width:100%;">
+                        
+                            <p class="w3-text-teal mb-1"> <span class="text-muted">Size: </span>@item.sanPham?.Size</p>
+                            <p><span class="text-muted mb-1">Color: </span>@item.sanPham?.Mau</p>
+                            <p><span class="text-muted mb-1">Số lượng: </span>@item.SoLuong</p>
+                            <p><span class="text-muted mb-1">Giá: </span>@(item.sanPham?.Gia * item.SoLuong)</p>
+                        
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+            <!-- End Right Column -->
+        </div>
+
+        <!-- End Grid -->
+    </div>
+
+    <!-- End Page Container -->
+</div>
+
+<div>
+    <a asp-action="Index">Quay lại</a>
+</div>

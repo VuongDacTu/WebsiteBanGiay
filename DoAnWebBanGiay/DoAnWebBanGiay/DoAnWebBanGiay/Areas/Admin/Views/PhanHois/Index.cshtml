@@ -1,0 +1,63 @@
+﻿@model IEnumerable<DoAnWebBanGiay.Models.Entities.PhanHoi>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Phản hồi </h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NoiDung)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.nguoiDung)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            @if (item.TrangThaiXem == false)
+            {
+                <tr style="background-color:#ccc;">
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NoiDung)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nguoiDung.Id)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NoiDung)
+                    </td>
+                    
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nguoiDung.Id)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id">Xem</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Xóa </a>
+                    </td>
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>

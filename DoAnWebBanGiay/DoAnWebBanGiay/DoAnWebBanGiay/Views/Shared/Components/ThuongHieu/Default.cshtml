@@ -1,0 +1,11 @@
+﻿@model IEnumerable<DoAnWebBanGiay.Models.Entities.ThuongHieu>
+<li class="menu-item has-sub">
+    <a asp-controller="ThuongHieu" asp-action="Index" class="item-anchor d-flex align-item-center" data-effect="Shop">THƯƠNG HIỆU<i class="icon icon-chevron-down"></i></a>
+    <ul class="submenu">
+        @foreach (var item in Model)
+        {
+            <li><a asp-controller="ThuongHieu" asp-action="Index" asp-route-idThuongHieu="@item.Id" class="item-anchor">@item.Ten</a></li>
+        }
+
+    </ul>
+</li>

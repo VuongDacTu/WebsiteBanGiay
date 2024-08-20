@@ -1,0 +1,36 @@
+﻿@model IEnumerable<DoAnWebBanGiay.Models.Entities.ChiTietDonHang>
+@using DoAnWebBanGiay.Models.Entities
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<AnhSP> anhSPs = ViewBag.AnhSP;
+}
+
+<div class="w3-twothird">
+    @foreach (var item in Model)
+    {
+        <div class="w3-container w3-card w3-white w3-margin-bottom" style="display: flex">
+            <div class="col-md-2 col-lg-2 col-xl-2">
+                <img src="~/Adminassets/Img/sanpham/@anhSPs.FirstOrDefault(x => x.IdSanPham == item.IdSanPham)?.Anh"
+                     class="img-fluid rounded-3" alt="Cotton T-shirt">
+            </div>
+            <div style="width:100%">
+                <h5 class="w3-opacity mb-1 text-center"><b>@item.sanPham?.Ten</b></h5>
+                <div class="w3-container " style="display:flex; justify-content:space-between; width:100%;">
+
+                    <p class="w3-text-teal mb-1"> <span class="text-muted">Size: </span>@item.sanPham?.Size</p>
+                    <p><span class="text-muted mb-1">Color: </span>@item.sanPham?.Mau</p>
+                    <p><span class="text-muted mb-1">Số lượng: </span>@item.SoLuong</p>
+                    <p><span class="text-muted mb-1">Giá: </span>@(item.sanPham?.Gia * item.SoLuong)</p>
+
+                    <hr>
+                </div>
+            </div>
+        </div>
+    }
+
+
+    <!-- End Right Column -->
+</div>
+
+

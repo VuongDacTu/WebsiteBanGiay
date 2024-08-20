@@ -1,0 +1,40 @@
+﻿@model IEnumerable<DoAnWebBanGiay.Models.Entities.TinTuc> 
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@await Component.InvokeAsync("Banner")
+@foreach(var item in Model)
+{
+    <section id="about-us">
+        <div class="container ">
+            <div class="row d-flex align-items-center mb-5">
+                <div class="col-lg-6 col-md-12">
+                    <div class="image-holder">
+                        <img src="~/Adminassets/Img/tintuc/@item.Anh" alt="single" class="about-image">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="detail">
+                        <div class="display-header">
+                            <h2 class="section-title">@item.TieuDe</h2>
+                            <p>
+                                @item.NoiDung
+                                <div class="btn-wrap">
+                                    <a asp-controller="Home" asp-action="Index" class="btn btn-dark btn-medium d-flex align-items-center" tabindex="0">
+                                        Đến shop<i class="icon icon-arrow-io"></i>
+                                    </a>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+}
+
+
+
+

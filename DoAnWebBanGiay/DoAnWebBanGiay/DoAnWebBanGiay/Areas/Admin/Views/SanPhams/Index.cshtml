@@ -1,0 +1,82 @@
+﻿@model X.PagedList.IPagedList<DoAnWebBanGiay.Models.Entities.SanPham>
+@using DoAnWebBanGiay.Models.Entities
+@using X.PagedList.Mvc.Core
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    List<AnhSP> anhSPs = ViewBag.AnhSP;
+}
+
+<h1>Sản phẩm</h1>
+
+<p>
+    <a asp-action="Create">Thêm mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Ten)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Size)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().SoLuong)
+            </th>
+ 
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Mau)
+            </th>
+       
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().loaiSP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().thuongHieu)
+            </th>
+            <th>Ảnh</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ten)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Size)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuong)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Mau)
+            </td>
+    
+            <td>
+                @Html.DisplayFor(modelItem => item.loaiSP.Ten)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.thuongHieu.Ten)
+            </td>
+            <td>
+                <img src="~/Adminassets/Img/sanpham/@anhSPs.FirstOrDefault(x => x.IdSanPham == item.Id)?.Anh" width="100px"/>
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }), new PagedListRenderOptions
+{
+    LiElementClasses = new string[] { "page-item" },
+    PageClasses = new string[] { "page-link" }
+})

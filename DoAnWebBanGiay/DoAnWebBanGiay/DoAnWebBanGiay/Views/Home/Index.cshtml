@@ -1,0 +1,65 @@
+﻿@model X.PagedList.IPagedList<DoAnWebBanGiay.Models.Entities.SanPham>
+@using DoAnWebBanGiay.Models.Entities
+@using X.PagedList.Mvc.Core
+@{
+    ViewData["Title"] = "Home Page";
+    List<AnhSP> anhSPs = ViewBag.Anh;
+}
+@await Component.InvokeAsync("Banner")
+<section id="selling-products" class="product-store bg-light-grey ">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Danh sách sản phẩm</h2>
+        </div>
+        <ul class="tabs list-unstyled">
+            <li data-tab-target="#all" class="active tab">Tất cả</li>
+        </ul>
+        <div class="tab-content">
+            <div id="all" data-tab-content class="active">
+                <div class="row d-flex flex-wrap">
+                    @foreach(var item in Model)
+                    {
+
+                        <div class="product-item col-lg-3 col-md-6 col-sm-6">
+                            <div class="image-holder">
+                                <img src="~/Adminassets/Img/sanpham/@anhSPs.FirstOrDefault(x => x.IdSanPham == item.Id)?.Anh" alt="Books" class="product-image">
+                            </div>
+                            <div class="cart-concern">
+                                <div class="cart-button d-flex justify-content-evenly align-items-center">
+                                <form asp-controller="GioHang" asp-action="ThemVaoGio" class="cartForm">
+                                    <input type="hidden" value="@item.Id" name="idSP" />
+                                    <input type="hidden" value="1" name="soLuong" />
+                                    <input type="hidden" value="@item.Gia" name="gia" />
+                                    <button type="submit" class="btn-wrap cart-link d-flex align-items-center">
+                                        Thêm vào giỏ <i class="icon icon-arrow-io"></i>
+                                    </button>
+                                </form>
+                                    <button type="button" class="view-btn tooltip
+                        d-flex">
+                                        <i class="icon icon-screen-full"></i>
+                                        <span class="tooltip-text">Chi tiết</span>
+                                    </button>
+                                    <!-- <button type="button" class="wishlist-btn">
+                                      <i class="icon icon-heart"></i>
+                                    </button> -->
+                                </div>
+                            </div>
+                            <div class="product-detail">
+                                <h3 class="product-title text-center">
+                                    <a asp-controller="ThuongHieu" asp-action="ChiTietSP" asp-route-idSanPham="@item.Id">@item.Ten</a>
+                                </h3>
+                                <div class="item-price text-primary">@item.Gia<span>đ</span></div>
+                            </div>
+                        </div>
+        
+                    }
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    @Html.PagedListPager(Model, page => Url.Action("Index",new {page = page}), new PagedListRenderOptions{
+        LiElementClasses = new string[]{"page-item"},
+        PageClasses = new string[]{"page-link"}
+    })
+</section>

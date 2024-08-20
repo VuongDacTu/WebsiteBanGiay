@@ -1,0 +1,151 @@
+﻿@model DoAnWebBanGiay.Models.Entities.SanPham
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Sửa sản phẩm</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Ten" class="control-label"></label>
+                <input asp-for="Ten" class="form-control" />
+                <span asp-validation-for="Ten" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MoTa" class="control-label"></label>
+                <input asp-for="MoTa" class="form-control" />
+                <span asp-validation-for="MoTa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Size" class="control-label"></label>
+                <input asp-for="Size" class="form-control" />
+                <span asp-validation-for="Size" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoLuong" class="control-label"></label>
+                <input asp-for="SoLuong" class="form-control" />
+                <span asp-validation-for="SoLuong" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gia" class="control-label"></label>
+                <input asp-for="Gia" class="form-control" />
+                <span asp-validation-for="Gia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GiamGia" class="control-label"></label>
+                <input asp-for="GiamGia" class="form-control" />
+                <span asp-validation-for="GiamGia" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="TrangThai" /> @Html.DisplayNameFor(model => model.TrangThai)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdLoaiSP" class="control-label"></label>
+                <select asp-for="IdLoaiSP" class="form-control" asp-items="ViewBag.IdLoaiSP"></select>
+                <span asp-validation-for="IdLoaiSP" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdThuongHieu" class="control-label"></label>
+                <select asp-for="IdThuongHieu" class="form-control" asp-items="ViewBag.IdThuongHieu"></select>
+                <span asp-validation-for="IdThuongHieu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NgayTao" class="control-label"></label>
+                <input asp-for="NgayTao" class="form-control" />
+                <span asp-validation-for="NgayTao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NguoiTao" class="control-label"></label>
+                <input asp-for="NguoiTao" class="form-control" />
+                <span asp-validation-for="NguoiTao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NgayCapNhat" class="control-label"></label>
+                <input asp-for="NgayCapNhat" class="form-control" />
+                <span asp-validation-for="NgayCapNhat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NguoiCapNhat" class="control-label"></label>
+                <input asp-for="NguoiCapNhat" class="form-control" />
+                <span asp-validation-for="NguoiCapNhat" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsDelete" /> @Html.DisplayNameFor(model => model.IsDelete)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mau" class="control-label"></label>
+                <select asp-for="Mau" class="form-control">
+                    @if(Model.Mau == "Trang")
+                    {
+                        <option selected value="Trang">Trắng</option>
+                    }else{
+                        <option value="Trang">Trắng</option>
+                    }
+                    @if (Model.Mau == "Den")
+                    {
+                        <option selected value="Den">Đen</option>
+                    }
+                    else
+                    {
+                        <option value="Den">Đen</option>
+                    }
+                    @if (Model.Mau == "Nau")
+                    {
+                        <option selected value="Nau">Nâu</option>
+                    }
+                    else
+                    {
+                        <option value="Nau">Nâu</option>
+                    }
+                    @if (Model.Mau == "Vang")
+                    {
+                        <option selected value="Vang">Vàng</option>
+                    }
+                    else
+                    {
+                        <option value="Vang">Vàng</option>
+                    }
+                    @if (Model.Mau == "Cam")
+                    {
+                        <option selected value="Cam">Cam</option>
+                    }
+                    else
+                    {
+                        <option value="Cam">Cam</option>
+                    }
+                    @if (Model.Mau == "Cam")
+                    {
+                        <option selected value="XanhDuong">Xanh Dương</option>
+                    }
+                    else
+                    {
+                        <option value="XanhDuong">Xanh Dương</option>
+                    }
+                </select>                <span asp-validation-for="Mau" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GiaNhap" class="control-label"></label>
+                <input asp-for="GiaNhap" class="form-control" />
+                <span asp-validation-for="GiaNhap" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Quay lại</a>
+</div>
+

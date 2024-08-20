@@ -1,0 +1,75 @@
+﻿@model IEnumerable<DoAnWebBanGiay.Models.Entities.DonHang>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    string color = "#fff";
+}
+
+<h1>Đơn hàng</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ten)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayMua)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrangThaiDonHang)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            @if(item.TrangThaiXem != true)
+            {
+                color = "#ccc";
+            }
+            else
+            {
+                color = "#fff";
+            }
+            <tr style="background-color:@color">
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.Ten)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayMua)
+            </td>
+                @if (item.TrangThaiDonHang == null)
+                {
+                    <td >
+                        Đơn hàng chưa được xác nhận
+                    </td>
+                }
+                else if (item.TrangThaiDonHang == false)
+                {
+                    <td >
+                        Đơn hàng đã bị huỷ
+                    </td>
+                }
+                else if (item.TrangThaiDonHang == true && item.TrangThaiThanhToan == true)
+                {
+                    <td >
+                        Đơn hàng đã gửi thành công
+                    </td>
+                }
+                else if (item.TrangThaiDonHang == true && item.TrangThaiThanhToan == false)
+                {
+                    <td>
+                        Đơn hàng đã xác nhận, chưa được thanh toán
+                    </td>
+                }
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Xem chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Xoá</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

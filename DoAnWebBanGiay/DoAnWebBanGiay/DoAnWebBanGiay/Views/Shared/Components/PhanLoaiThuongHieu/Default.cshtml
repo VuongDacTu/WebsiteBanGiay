@@ -1,0 +1,5 @@
+﻿@model IEnumerable<DoAnWebBanGiay.Models.Entities.ThuongHieu> 
+@foreach(var item in Model)
+{
+    <li class="tab"><a asp-controller="ThuongHieu" asp-action="Index" asp-route-idThuongHieu="@item.Id">@item.Ten</a></li>
+}

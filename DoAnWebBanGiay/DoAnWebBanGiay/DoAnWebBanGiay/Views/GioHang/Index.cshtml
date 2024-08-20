@@ -1,0 +1,225 @@
+﻿@using DoAnWebBanGiay.Models.Entities
+@model IEnumerable<DoAnWebBanGiay.Models.GioHang>
+@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    var user = HttpContextAccessor.HttpContext.Session.GetString("CustomerLogin");
+}
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<AnhSP> anhSPs = ViewBag.AnhSP;
+    List<SanPham> sp = ViewBag.SanPham;
+    double tongtien = 0.0;
+    List<PhuongThucThanhToan> pttts = ViewBag.PTTT;
+}
+
+<style>
+    .option-pay{
+        display: flex;
+        align-items: center;
+    }
+
+    .total-cart{
+        margin-top: 20px;
+    }
+
+    .form-group label{
+        margin-bottom: -10px;
+    }
+
+    .col-md-2 button{
+        top: 10px;
+    }
+</style>
+    <section class="h-100" style="background-color: #eee;">
+        <div class="container h-100 py-5 mb-5">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-10">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <p class="fw-normal mb-0 text-black fs-1 fw-bold">Giỏ hàng</p>
+                    </div>
+                    <div class="">
+                        <h4 class="text-primary">@ViewBag.Status</h4>
+                    </div>
+                   
+                <form asp-action="ThanhToan" method="post">
+                    <div id="'product-list">
+
+                    
+                @foreach(var item in Model)
+                    {
+                        if (sp.FirstOrDefault(x => x.Id == item.IdSanPham) != null)
+                        {
+                          
+                    <div class="card rounded-3 mb-4">
+                        <div class="card-body p-4">
+                            <div class="row d-flex justify-content-between align-items-center">
+                                <div class="col-md-2 col-lg-2 col-xl-2">
+                                    <img src="~/Adminassets/Img/sanpham/@anhSPs.FirstOrDefault(x => x.IdSanPham == item.IdSanPham)?.Anh" 
+                                         class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-xl-3">
+                                    <p class="lead fw-normal mb-2">@sp.FirstOrDefault(x => x.Id == item.IdSanPham)?.Ten</p> 
+                                    <p>
+                                        <span class="text-muted">Size: </span>@sp.FirstOrDefault(x => x.Id == item.IdSanPham)?.Size <br>
+                                        <span class="text-muted">Color: </span>@sp.FirstOrDefault(x => x.Id == item.IdSanPham)?.Mau
+                                    </p>
+                                </div>
+                                <p class="col-md-2 col-lg-3 col-xl-2" data-price="@sp.FirstOrDefault(x => x.Id == item.IdSanPham)?.Gia">
+                                    Giá:
+                                    <span>@string.Format("{0:#,##0}", sp.FirstOrDefault(x => x.Id == item.IdSanPham)?.Gia)</span>VND
+                                </p>
+                                <div class="col-md-2 col-lg-3 col-xl-2 d-flex">
+                                    <button @* data-mdb-button-init data-mdb-ripple-init *@ class="btn btn-link px-2 qty_btn"
+                                                @* onclick="this.parentNode.querySelector('input[type=number]').stepDown(); return false" *@ onclick="return false">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+
+                                     <input type="number" min="1" id="soluong_@item.IdSanPham" value="@item.SoLuong" name="soluong[@item.IdSanPham]" class="form-control form-control-sm mt-4 qty_input" />
+
+                                    <button @* data-mdb-button-init data-mdb-ripple-init *@ class="btn btn-link px-2 qty_btn"
+                                                @* onclick="this.parentNode.querySelector('input[type=number]').stepUp(); return false"*@ onclick="return false">
+                                                    <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <p class="col-md-2 col-lg-2 col-xl-2 offset-lg-1 total-money" data-money="@(sp.FirstOrDefault(x => x.Id == item.IdSanPham)?.Gia * item.SoLuong)">
+                                            <span class="mb-0 tongTien" id="money">@(sp.FirstOrDefault(x => x.Id == item.IdSanPham)?.Gia * item.SoLuong)</span>
+                                </p>
+                                <div class="col-md-1 col-lg-1 col-xl-1 text-end w-100">
+                                    <a asp-action="XoaGioHang" asp-route-id="@item.IdSanPham" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    double priceSP = sp.FirstOrDefault(x => x.Id == item.IdSanPham)?.Gia??0;
+                    tongtien += priceSP * item.SoLuong;
+                    
+                }
+                    }
+                    </div>
+                    <div class="card-pay">
+                        <div class="option-pay">
+                             @* <label>Chọn phương thức thanh toán</label>  *@
+                            <!-- <p>Chon</p> -->
+                            <select name="tt">
+                                
+                                <option value="0">-- Chọn phương thức thanh toán --</option>
+                                @foreach(var item in pttts)
+                                {
+                                    <option value="@item.Id">@item.Ten</option>
+                                }
+                            </select>
+   
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label>Địa chỉ</label>
+                            @if (user != null)
+                            {
+                                var u = JsonConvert.DeserializeObject<NguoiDung>(user);
+                                <input placeholder="Nhập địa chỉ" required="" name="address" class="form-control" value="@u.DiaChi" />
+                            }
+                            else
+                            {
+                                <input placeholder="Nhập địa chỉ" required="" name="address" class="form-control" />
+                            }
+                        </div>
+                        <div class="total-cart">
+                            <p>Tổng: <span id="totalMoney">@tongtien</span> </p>
+                        </div>
+                        <div class="confirm-pay">
+                            <button onclick="infor()" type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-warning btn-block btn-lg">Thanh toán</button>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // debugger;
+        $('.qty_btn .fa-minus').click(function () {
+            let qty = parseInt($(this).parent().siblings('.qty_input').val());
+            let price = parseFloat($(this).parent().parent().siblings('p').attr("data-price"));
+            if (qty > 0) {
+                qty -= 1;
+            }
+            let money = qty * price; // Tính thành tiền
+            $(this).parent().siblings('.qty_input').val(qty);
+            // let id = $(this).parent().parent().parent().parent().siblings('.btn-action').children('.update').attr("data-id");
+            // let href = "/cart/Update/?id=" + id + "&quantity=" + qty; // link cập nhật sản    phẩm trong giỏ hàng
+            // $(this).parent().parent().parent().parent().siblings('.btn-action').children('.update').attr("href", href);
+            $(this).parent().parent().siblings('p').attr("data-money", money);
+            let total_money = formatMoney(money, 0, ",", ".");
+
+            $(this).parent().parent().siblings('p').children("span#money").text(total_money);
+            let totalMoney = formatMoney(total(), 0, ",", ".");
+            $("#totalMoney").text(totalMoney); // hiển thị tổng tiền
+   
+        })
+
+        //Tawng
+        $('.qty_btn .fa-plus').click(function () {
+            console.log("fa-plus");
+            // debugger;
+            let qty = parseInt($(this).parent().siblings('.qty_input').val()); // 1
+            let price = parseFloat($(this).parent().parent().siblings('p').attr("data-price"));
+            qty += 1;
+            let money = qty * price;
+            // hien thi du lieu
+            $(this).parent().siblings('.qty_input').val(qty);
+            // let id = $(this).parent().parent().parent().parent().siblings('.btn-action').children('.update').attr("data-id");
+            // let href = "/cart/Update/?id=" + id + "&quantity=" + qty;
+            // $(this).parent().parent().parent().parent().siblings('.btn-action').children('.update').attr("href", href);
+            $(this).parent().parent().siblings('p').attr("data-money", money);
+            let total_money = formatMoney(money, 0, ",", ".");
+
+            $(this).parent().parent().siblings('p').children("span#money").text(total_money);
+            let totalMoney = formatMoney(total(), 0, ",", ".");
+            $("#totalMoney").text(totalMoney);
+            $("#totalMoneyPay").text(totalMoney);
+        })
+
+
+
+        function total() {
+            let totalMoney = 0;
+            $("p.total-money").each(function () {
+                console.log($(this));
+                console.log($(this).attr("data-money"));
+                let money = parseFloat($(this).attr("data-money"));
+                console.log("total-money", money);
+                totalMoney += money;
+            });
+            return totalMoney;
+        }
+
+        total();
+
+    });
+    function formatMoney(amount, decimalCount = 2, decimal = ".", thousands = ",") {
+        try {
+            decimalCount = Math.abs(decimalCount);
+            decimalCount = isNaN(decimalCount) ? 2 : decimalCount;
+            const negativeSign = amount < 0 ? "-" : "";
+            let i = parseInt(amount = Math.abs(Number(amount) ||
+                0).toFixed(decimalCount)).toString();
+            let j = (i.length > 3) ? i.length % 3 : 0;
+            return negativeSign +
+                (j ? i.substr(0, j) + thousands : '') +
+                i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands) +
+                (decimalCount ? decimal + Math.abs(amount -
+                    i).toFixed(decimalCount).slice(2) : "");
+        } catch (e) {
+            console.log(e)
+        }
+    };
+</script>

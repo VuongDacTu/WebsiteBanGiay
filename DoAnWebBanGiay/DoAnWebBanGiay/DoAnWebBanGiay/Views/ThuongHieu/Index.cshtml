@@ -1,0 +1,165 @@
+﻿
+@model X.PagedList.IPagedList<DoAnWebBanGiay.Models.Entities.SanPham> ;
+@using DoAnWebBanGiay.Models.Entities
+@using X.PagedList.Mvc.Core
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<AnhSP> anhsp = ViewBag.Anhsp;
+}
+
+<style>
+    .discount{
+        position: absolute;
+        top: 6%;
+        margin-left: 30px;
+        background-color: aqua;
+        padding: 0.5rem;
+        border-radius: 15px;
+        box-shadow: 5px 5px 5px #AAA;
+    }
+    a{
+        color: #000;
+    }
+</style>
+
+<div class="shopify-grid padding-large">
+      <div class="container">
+        <div class="row">
+
+          <section id="selling-products" class="col-md-9 product-store">
+            <div class="container">
+              <ul class="tabs list-unstyled">
+                        <li class="active tab"><a asp-controller="ThuongHieu" asp-action="Index">Tất cả</a></li>
+                @await Component.InvokeAsync("PhanLoaiThuongHieu")
+                
+              </ul>
+              <div class="tab-content">
+                <div id="all" data-tab-content="" class="active">
+                  <div class="row d-flex flex-wrap">
+                      @foreach( var item in Model){
+                                    <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 4" style="width: 329px; margin-right: 30px;">
+                                        <div class="product-item">
+                                            <img src="~/Adminassets/Img/sanpham/@anhsp.FirstOrDefault(x => x.IdSanPham == item.Id)?.Anh" alt="Books" class="product-image">
+                                            <div class="cart-concern">
+                                                <div class="cart-button d-flex justify-content-evenly align-items-center">
+                                                    <form asp-controller="GioHang" asp-action="ThemVaoGio" class="cartForm">
+                                                        <input type="hidden" value="@item.Id" name="idSP" />
+                                                        <input type="hidden" value="1" name="soLuong" />
+                                                        <input type="hidden" value="@item.Gia" name="gia" />
+                                                        <button type="submit" class="btn-wrap cart-link d-flex align-items-center">
+                                                            Thêm vào giỏ <i class="icon icon-arrow-io"></i>
+                                                        </button>
+                                                    </form>
+                                                    <button type="button" class="view-btn tooltip
+                        d-flex">
+                                                        <i class="icon icon-screen-full"></i>
+                                                        <span class="tooltip-text">Chi tiết</span>
+                                                    </button>
+                                                    <!-- <button type="button" class="wishlist-btn">
+                                                      <i class="icon icon-heart"></i>
+                                                    </button> -->
+                                                </div>
+                                            </div>
+                                            @if(item.GiamGia > 0)
+                                            {
+                                                <div class="discount"> @item.GiamGia %</div>
+                                            }
+                                            <div class="product-detail">
+                                                <h3 class="product-title text-center">
+                                                    <a asp-controller="ThuongHieu" asp-action="ChiTietSP" asp-route-idSanPham="@item.Id">@item.Ten</a>
+                                                </h3>
+                                                @if(item.GiamGia > 0)
+                                                {
+                                                    <div class="item-price text-primary">
+                                                        <del class="prev-price">@item.Gia</del>@(item.Gia - (item.Gia * item.GiamGia / 100))đ
+                                                    </div>
+                                                }else{
+                                                    <div class="item-price text-primary">
+                                                        <p class="prev-price">@item.Gia đ</p>
+                                                    </div>
+                                                }
+  
+                                            </div>
+                                        </div>
+                                    </div>
+                      }
+                    
+                   
+                 
+                  </div>
+                </div>
+
+                   @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page, idThuongHieu = ViewBag.idThuongHieu }), new PagedListRenderOptions
+                   {
+                       LiElementClasses = new string[] { "page-item" },
+                       PageClasses = new string[] { "page-link" }
+                   })
+               
+              </div>
+              
+              <!-- option  -->
+              
+              
+            </div>
+          </section>
+
+          <aside class="col-md-3">
+            <div class="sidebar">
+              <div class="widgets widget-menu">
+                <div class="widget-search-bar">
+                  <form asp-action="Index" role="search" method="get" class="d-flex">
+                    <input class="search-field" placeholder="Tìm kiếm" name="name" value="@ViewBag.Name" type="text">
+                    <button class="btn btn-dark"><i class="icon icon-search"></i></button>
+                  </form>
+                </div> 
+              </div>
+              <div class="widgets widget-product-tags">
+                <h5 class="widget-title">Màu sắc</h5>
+                <ul class="product-tags sidebar-list list-unstyled">
+                  <li class="tags-item">
+                    <a asp-action="Index" asp-route-color="Trang">Trắng</a>
+                  </li>
+                  <li class="tags-item">
+                    <a  asp-action="Index" asp-route-color="Den">Đen</a>
+                  </li>
+                  <li class="tags-item">
+                    <a asp-action="Index" asp-route-color="Nau">Nâu</a>
+                  </li>
+                  <li class="tags-item">
+                    <a asp-action="Index" asp-route-color="Vang">Vàng</a>
+                  </li>
+                  <li class="tags-item">
+                    <a asp-action="Index" asp-route-color="Cam">Cam</a>
+                  </li>
+                  <li class="tags-item">
+                    <a asp-action="Index" asp-route-color="XanhDuong">Xanh dương</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="widgets widget-price-filter">
+                <h5 class="widget-title">Giá</h5>
+                <ul class="product-tags sidebar-list list-unstyled">
+                  <li class="tags-item">
+                     <a asp-action="Index" asp-route-minPrice="1" asp-route-maxPrice="1000000">0 đ - 1.000.000 đ</a>
+                  </li>
+                  <li class="tags-item">
+                    <a asp-action="Index" asp-route-minPrice="1000000" asp-route-maxPrice="2000000">1.000.000 đ - 2.000.000 đ</a>
+                  </li>
+                  <li class="tags-item">
+                    <a asp-action="Index" asp-route-minPrice="2000000" asp-route-maxPrice="3000000">2.000.000 đ - 3.000.000 đ</a>
+                  </li>
+                  <li class="tags-item">
+                                <a asp-action="Index" asp-route-minPrice="3000000" asp-route-maxPrice="4000000">3.000.000 đ - 4.000.000 đ</a>
+                </li>
+                <li class="tags-item">
+                    <a asp-action="Index" asp-route-minPrice="4000000" asp-route-maxPrice="90000000">> 4.000.000 đ</a>
+                </li>
+                </ul>
+              </div>
+            </div>
+          </aside>
+          
+        </div>        
+      </div>      
+    </div>

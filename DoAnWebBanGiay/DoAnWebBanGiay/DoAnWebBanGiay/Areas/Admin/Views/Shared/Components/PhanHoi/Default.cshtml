@@ -1,0 +1,9 @@
+﻿@model IEnumerable<DoAnWebBanGiay.Models.Entities.PhanHoi>
+<li>
+    <a asp-area="Admin" asp-controller="PhanHois" asp-action="Index">
+        Phản hồi     <span class="alert alert-danger">
+            @Model.Count()
+        </span>
+    </a>
+
+</li>

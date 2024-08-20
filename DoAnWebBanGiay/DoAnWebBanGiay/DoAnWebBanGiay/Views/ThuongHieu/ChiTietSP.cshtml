@@ -1,0 +1,84 @@
+﻿@using DoAnWebBanGiay.Models.Entities
+@model DoAnWebBanGiay.Models.Entities.SanPham
+@{
+    ViewData["Title"] = "ChiTietSP";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<AnhSP> anhsp = ViewBag.AnhSP;
+}
+
+<style>
+    .size, .color {
+        margin-bottom: 20px;
+    }
+
+   
+    
+</style>
+<div class="container-fluid py-5 mt-5">
+    <div class="container py-5">
+        <div class="row g-4 mb-5">
+            <div class="col-lg-8 col-xl-9">
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="border rounded">
+                            <a href="#">
+                                <img src="~/Adminassets/Img/sanpham/@anhsp.FirstOrDefault(x => x.IdSanPham == Model.Id)?.Anh" class="img-fluid rounded" alt="Image">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <h4 class="fw-bold mb-3">@Model.Ten</h4>
+                        <p class="mb-3">Hãng giày: @ViewBag.ThuongHieu</p>
+                        <h5 class="mb-3">Giá: @Model.Gia đ</h5>
+                        <div class="size d-flex jus">
+                            <div style="margin-right: 10px; margin-top: 5px;">Kích cỡ</div>
+                            <select name="" id="">
+                                <option value="37">37</option>
+                                <option value="38">38</option>
+                                <option value="39">39</option>
+                                <option value="40">40</option>
+                                <option value="41">41</option>
+                                <option value="42">42</option>
+                                <option value="43">43</option>
+                            </select>
+                        </div>
+                        <div class="color d-flex">
+                            <div style="margin-right: 10px; margin-top: 5px;">Màu</div>
+                            <select name="" id="">
+                                <option value="Đen">Đen</option>
+                                <option value="Trắng">Trắng</option>
+                                <option value="Nâu">Nâu</option>
+                                <option value="Vàng">Vàng</option>
+                                <option value="Cam">Cam</option>
+                                <option value="Xanh">Xanh Dương</option>
+                            </select>
+                        </div>
+                        <p class="mb-4">@Model.MoTa</p>
+                        <div class="input-group form-group quantity mb-5 d-flex" style="width: 100px;">
+                            <div class="input-group-btn ">
+                                <button class="btn btn-sm btn-minus rounded-circle bg-light border" style="top: 10px;">
+                                    <i class="fa-solid fa-minus" style="color: #000000;"></i>
+                                </button>
+                            </div>
+                            <input type="number" class="form-control form-control-sm text-center border-0" value="1">
+                            <div class="input-group-btn">
+                                <button class="btn btn-sm btn-plus rounded-circle bg-light border" style="top: 10px;">
+                                    <i class="fa-solid fa-plus" style="color: #000000;"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <a asp-controller="GioHang" asp-action="ThemVaoGio" asp-route-idSP="@Model.Id" asp-route-soLuong="1" asp-route-gia="@Model.Gia" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary" style="background-color:rgb(244, 244, 244);"><i class="icon icon-shopping-cart"></i> Thêm vào giỏ</a>
+                    </div>
+                </div>
+            </div>
+ 
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Customer/js/productdetail.js"></script>
+
+}

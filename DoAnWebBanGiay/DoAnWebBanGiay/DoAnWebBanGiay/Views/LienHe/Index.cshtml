@@ -1,0 +1,74 @@
+﻿@model IEnumerable<DoAnWebBanGiay.Models.Entities.LienHe> 
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    a{
+        text-decoration: none;
+       color: #000;
+    }
+</style>
+
+<section class="contact-information padding-large">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="section-header">
+                    <h2 class="section-title">Liên hệ</h2>
+                </div>
+                
+                <div class="contact-detail">
+                    @foreach(var item in Model)
+                    {
+                        <div class="detail-list">
+                        
+                        <ul class="list-unstyled list-icon">
+                            <li>
+                                <a><i class="fa-solid fa-phone" style="color: #ff0000;" ></i>@item.SDT</a>
+                            </li>
+                            <li>
+                                <a href="dshoes@gmail.com"><i class="fa-regular fa-envelope" style="color: #ff0000;"></i>@item.Email</a>
+                            </li>
+                            <li>
+                                <a><i class="fa-solid fa-location-dot" style="color: #ff0000;"></i>@item.DiaChi</a>
+                            </li>
+                            <li>
+                                <i class="fa-brands fa-facebook " style="color: #2c67ce;"></i>
+                                    <a target="_blank" href="@item.FaceBook">Facebook: D SHOES </a>
+                            </li>
+                            <li>
+                                <i class="fa-brands fa-tiktok "></i>
+                                    <a target="_blank" href="@item.TikTok">Tiktok: D SHOES</a>
+                            </li>
+                            <li>
+                                <i class="fa-brands fa-instagram " style="color: #f75c08;"></i>
+                                    <a target="_blank" href="@item.Instagram">Instagram: D SHOES</a>
+                            </li>
+                        </ul>
+                    </div>
+     
+                    }
+                    
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="contact-information">
+                    <div class="section-header">
+                        <h2 class="section-title">Gửi tin nhắn cho chúng tôi!</h2>
+                    </div>
+                    <h5 class="text-success">@ViewBag.Status</h5>
+                    <form asp-action="submit" method="post" class="contact-form">
+                        <input  type="hidden" name="id" value="@ViewBag.Id"/>
+                        <div class="form-item">
+                            <input type="text" value="@ViewBag.Name" name="name"  class="u-full-width bg-light" readonly>
+                            <input type="email" value="@ViewBag.Email" name="email" class="u-full-width bg-light" readonly>
+                            <textarea class="u-full-width bg-light" name="message" placeholder="Tin nhắn" style="height: 180px;" required></textarea>
+                        </div>
+                        <button type="submit" name="submit" class="btn btn-dark btn-full btn-medium">Gửi</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

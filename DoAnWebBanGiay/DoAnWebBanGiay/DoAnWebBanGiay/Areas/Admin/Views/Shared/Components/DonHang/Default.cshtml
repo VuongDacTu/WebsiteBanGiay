@@ -1,0 +1,14 @@
+﻿@model int
+<li class="nav-item ">
+    <a class="dropdown-toggle" asp-area="Admin" asp-controller="DonHangs" asp-action="Index">
+        <span class="icon-holder">
+            <i class="fas fa-user"></i>
+        </span>
+        <span class="title">Quản lý đơn hàng
+            @if(Model > 0)
+            {
+                <span class="alert alert-danger">@Model</span>
+            }
+        </span>
+    </a>
+</li>

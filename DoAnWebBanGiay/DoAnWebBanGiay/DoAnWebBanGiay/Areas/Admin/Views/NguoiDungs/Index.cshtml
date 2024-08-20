@@ -1,0 +1,80 @@
+﻿@model X.PagedList.IPagedList<DoAnWebBanGiay.Models.Entities.NguoiDung>
+@using X.PagedList.Mvc.Core
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Quản lí người dùng</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().HoTen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().SDT)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().DiaChi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().TaiKhoan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Anh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Role)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoTen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SDT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiaChi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaiKhoan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Anh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+     
+                    <a asp-action="Details" class="btn btn-primary" asp-route-id="@item.Id">Chi tiết</a>
+                    @if(item.IsActive == true)
+                    {
+                        <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Khoá </a>
+                    }else{
+                        <a class="btn btn-outline-success" asp-action="Active" asp-route-id="@item.Id">Mở </a>
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<p class="text-danger">@ViewBag.Error</p>
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }), new PagedListRenderOptions
+{
+    LiElementClasses = new string[] { "page-item" },
+    PageClasses = new string[] { "page-link" }
+})
